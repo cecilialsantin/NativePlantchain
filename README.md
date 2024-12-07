@@ -1,7 +1,9 @@
 
 # NativePlantchain
 
-NativePlantchain es un proyecto que incentiva a las personas a plantar especies nativas en sus respectivas ecorregiones, promoviendo la restauración de ecosistemas.
+El traslado de plantas fuera de su hábitat natural constituyen la segunda causa de extinción a nivel mundial, ya que luego de establecerse invaden el nuevo ambiente. Este problema se presenta a la largo de todo el territorio argentino, inclusive en áreas protegidas.
+
+NativePlantchain es un proyecto que incentiva a las personas a plantar especies nativas en sus ecorregiones, promoviendo que la sociedad cuide y proteja las especies de la flora de la Provincia de Buenos Aires: Pampeana, el Espinal, y Deltas e Islas del Paraná. También se favorece la conservación de las especies nativas, muchas de las cuales están en riesgo en sus hábitats naturales.
 
 Los usuarios reciben tokens únicos (NFTs ERC-721) como recompensa al registrar y verificar pruebas de plantación de especies nativas correspondientes a su ecorregión. Cada token representa la especie plantada, la ubicación y su conexión con la ecorregión correspondiente.
 
