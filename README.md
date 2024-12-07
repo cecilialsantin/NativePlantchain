@@ -1,6 +1,10 @@
 
 # NativePlantchain
 
+El traslado de plantas fuera de su hábitat natural constituyen la segunda causa de extinción a nivel mundial, ya que luego de establecerse invaden el nuevo ambiente. Este problema se presenta a la largo de todo el territorio argentino, inclusive en áreas protegidas.
+
+NativePlantchain es un proyecto que incentiva a las personas a plantar especies nativas en sus respectivas ecorregiones, promoviendo la restauración de ecosistemas.
+
 NativePlantchain es un proyecto que incentiva a las personas a plantar especies nativas en sus respectivas ecorregiones, promoviendo la restauración de ecosistemas.
 
 Los usuarios reciben tokens únicos (NFTs ERC-721) como recompensa al registrar y verificar pruebas de plantación de especies nativas correspondientes a su ecorregión. Cada token representa la especie plantada, la ubicación y su conexión con la ecorregión correspondiente.
