@@ -815,16 +815,19 @@ const UserDashboard = ({ userAddress }: { userAddress: string }) => {
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="text-2xl font-bold mb-4">Plantadores</h1>
-      <p className="mb-4">
-        Dirección conectada: <strong>{userAddress}</strong>
-      </p>
-      <div className="text-center bg-green-100 p-4 rounded-md shadow-md w-full max-w-3xl">
+  <h1 className="text-2xl font-bold mb-4">Plantadores</h1>
+  <p className="mb-4">
+    Dirección conectada: <strong>{userAddress}</strong>
+  </p>
+  <div className="flex flex-col lg:flex-row gap-8 w-full max-w-5xl">
+    {/* Columna izquierda */}
+    <div className="lg:w-1/2">
+      <div className="text-center bg-green-100 p-4 rounded-md shadow-md w-full">
         <p className="text-lg font-semibold text-green-800">
           Especies a plantar según tu eco-región. Podrás reclamar <strong>NativePlanTokens</strong> una vez que plantes alguna de las especies listadas y envíes los datos.
         </p>
       </div>
-      <div className="mt-4 w-full max-w-3xl text-center">
+      <div className="mt-4 w-full text-center">
         <a
           href="https://www.ambiente.gba.gob.ar/pdfs/002_Catalogo_Nativas_ABRIL2024.pdf"
           target="_blank"
@@ -834,119 +837,129 @@ const UserDashboard = ({ userAddress }: { userAddress: string }) => {
           <FaLeaf /> Ver guía de especies nativas de la eco-región
         </a>
       </div>
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
         {ecoRegions.map((region) => (
-          <div
-            key={region.name}
-            className="bg-green-50 bg-opacity-70 p-3 rounded-md shadow-sm text-center"
-          >
+          <div key={region.name} className="bg-green-50 bg-opacity-70 p-3 rounded-md shadow-sm text-center">
             <h2 className="text-lg font-semibold mb-1 text-green-800">{region.name}</h2>
             <div className="text-sm text-gray-800 leading-tight">
               {region.species.map((species) => (
-                <p key={species} className="mb-1">
-                  {species}
-                </p>
+                <p key={species} className="mb-1">{species}</p>
               ))}
             </div>
           </div>
         ))}
       </div>
+    </div>
+
+    {/* Columna derecha */}
+    <div className="lg:w-1/2 bg-pink-100 bg-opacity-80 p-6 rounded-lg shadow-lg">
+      {/* Botón para presentar plantación */}
       <button
-        className="mt-6 px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-900"
+        className="mb-6 px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-900"
         onClick={() => setIsModalOpen(true)}
       >
         Presentar Plantación
       </button>
 
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-md shadow-md max-w-md w-full">
-            <h2 className="text-xl font-bold mb-4">Presentar Plantación</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label htmlFor="speciesName" className="block text-sm font-medium text-gray-700">
-                  Nombre de la especie
-                </label>
-                <input
-                  type="text"
-                  id="speciesName"
-                  value={speciesName}
-                  onChange={(e) => setSpeciesName(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
-                  required
-                />
+      <h2 className="text-xl font-semibold mb-4 text-green-800">Tus plantas presentadas:</h2>
+      {isLoadingEvents ? (
+        <p className="text-green-600 animate-pulse">Cargando eventos...</p>
+      ) : userSubmittedEvents.length > 0 ? (
+        <ul className="divide-y divide-green-300">
+          {userSubmittedEvents.map((event, index) => (
+            <li key={index} className="py-3">
+              <div className="text-gray-800">
+                <strong className="block">ID:</strong> {event.args.submissionId?.toString() || "N/A"}
               </div>
-              <div className="mb-4">
-                <label htmlFor="region" className="block text-sm font-medium text-gray-700">
-                  Región
-                </label>
-                <input
-                  type="text"
-                  id="region"
-                  value={region}
-                  onChange={(e) => setRegion(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
-                  required
-                />
+              <div className="text-gray-800">
+                <strong className="block">Especie:</strong> {event.args.speciesName || "N/A"}
               </div>
-              <div className="mb-4">
-                <label htmlFor="photoURL" className="block text-sm font-medium text-gray-700">
-                  URL de la foto
-                </label>
-                <input
-                  type="text"
-                  id="photoURL"
-                  value={photoURL}
-                  onChange={(e) => setPhotoURL(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
-                  required
-                />
+              <div className="text-gray-800">
+                <strong className="block">Región:</strong> {event.args.region || "N/A"}
               </div>
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-2 hover:bg-gray-400"
-                  onClick={() => setIsModalOpen(false)}
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-900"
-                  disabled={isMining}
-                >
-                  {isMining ? "Presentando..." : "Presentar"}
-                </button>
+              <div className="text-gray-800">
+                <strong className="block">Timestamp:</strong>{" "}
+                {event.args.timestamp
+                  ? new Date(Number(event.args.timestamp) * 1000).toLocaleString()
+                  : "N/A"}
               </div>
-            </form>
-          </div>
-        </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-gray-600 italic">No has presentado ninguna planta aún.</p>
       )}
-
-      {/* Lista de plantas presentadas */}
-      <div>
-    <h2 className="text-lg font-bold mb-4">Tus plantas presentadas:</h2>
-    {isLoadingEvents ? (
-      <p>Cargando eventos...</p>
-    ) : userSubmittedEvents.length > 0 ? (
-      <ul className="list-disc list-inside bg-green-50 p-4 rounded-md shadow-md">
-        {userSubmittedEvents.map((event, index) => (
-          <li key={index} className="text-gray-800">
-            <strong>ID:</strong> {event.args.submissionId?.toString() || "N/A"},{" "}
-            <strong>Especie:</strong> {event.args.speciesName || "N/A"},{" "}
-            <strong>Región:</strong> {event.args.region || "N/A"},{" "}
-            <strong>Timestamp:</strong>{" "}
-            {event.args.timestamp
-              ? new Date(Number(event.args.timestamp) * 1000).toLocaleString()
-              : "N/A"}
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p className="text-gray-500">No has presentado ninguna planta aún.</p>
-    )}
-  </div>
     </div>
+  </div>
+
+  {/* Modal para el formulario */}
+  {isModalOpen && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-md shadow-md max-w-md w-full">
+        <h2 className="text-xl font-bold mb-4">Presentar Plantación</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="speciesName" className="block text-sm font-medium text-gray-700">
+              Nombre de la especie
+            </label>
+            <input
+              type="text"
+              id="speciesName"
+              value={speciesName}
+              onChange={(e) => setSpeciesName(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="region" className="block text-sm font-medium text-gray-700">
+              Región
+            </label>
+            <input
+              type="text"
+              id="region"
+              value={region}
+              onChange={(e) => setRegion(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="photoURL" className="block text-sm font-medium text-gray-700">
+              URL de la foto
+            </label>
+            <input
+              type="text"
+              id="photoURL"
+              value={photoURL}
+              onChange={(e) => setPhotoURL(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+              required
+            />
+          </div>
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-2 hover:bg-gray-400"
+              onClick={() => setIsModalOpen(false)}
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-900"
+              disabled={isMining}
+            >
+              {isMining ? "Presentando..." : "Presentar"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )}
+</div>
+
+
   );
 };
 
