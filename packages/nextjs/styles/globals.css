@@ -1,20 +1,16 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
 
-:root,
-[data-theme] {
-  background: oklch(var(--b2));
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 body {
-  min-height: 100vh;
+  @apply min-h-screen bg-green-200 text-pink-800 font-light;
+  font-family: "Poppins", sans-serif;
 }
 
-h1,
-h2,
-h3,
-h4 {
+h1, h2, h3, h4 {
   margin-bottom: 0.5rem;
   line-height: 1;
 }
