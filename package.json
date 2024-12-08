@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.1.0",
+    "@pinata/sdk": "^2.1.0",
     "react-icons": "^5.4.0",
     "wagmi": "latest"
   }
