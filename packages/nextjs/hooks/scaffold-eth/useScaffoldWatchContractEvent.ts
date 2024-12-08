@@ -16,11 +16,12 @@ import { ContractAbi, ContractName, UseScaffoldEventConfig } from "~~/utils/scaf
 export const useScaffoldWatchContractEvent = <
   TContractName extends ContractName,
   TEventName extends ExtractAbiEventNames<ContractAbi<TContractName>>,
->({
-  contractName,
-  eventName,
-  onLogs,
-}: UseScaffoldEventConfig<TContractName, TEventName>) => {
+>(
+  p0: string,
+  p1: string,
+  p2: (event: any) => void,
+  { contractName, eventName, onLogs }: UseScaffoldEventConfig<TContractName, TEventName>
+) => {
   const { data: deployedContractData } = useDeployedContractInfo(contractName);
   const { targetNetwork } = useTargetNetwork();
 
