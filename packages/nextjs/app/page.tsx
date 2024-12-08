@@ -2,53 +2,55 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAccount, useDisconnect } from "wagmi";
-import UserDashboard from "~~/components/UserDashboard";
+import { useAccount } from "wagmi";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import OwnerDashboard from "~~/components/OwnerDashboard";
+import UserDashboard from "~~/components/UserDashboard";
 
 const Home = () => {
-  const { address, isConnected } = useAccount();
-
-  
-  const { disconnect } = useDisconnect();
-
+  const { address: connectedAddress, isConnected } = useAccount();
   const [isOwner, setIsOwner] = useState(false);
-  const ownerAddress = "0xOwnerAddress"; // Cambia esto por la dirección real del propietario
 
-  // Detectar si el usuario conectado es el propietario
+  // Usar el hook scaffold para obtener el propietario del contrato
+  const { data: ownerAddress, isLoading: isOwnerLoading } = useScaffoldReadContract({
+    contractName: "NativePlantTokens", // Nombre del contrato en deployedContracts.ts
+    functionName: "owner", // Nombre de la función en el ABI del contrato
+  });
+
+  // Detectar si el usuario conectado es el propietario del contrato
   useEffect(() => {
-    if (isConnected && address) {
-      setIsOwner(address === ownerAddress);
+    if (isConnected && connectedAddress && ownerAddress) {
+      setIsOwner(connectedAddress.toLowerCase() === ownerAddress.toLowerCase());
     }
-  }, [isConnected, address]);
+  }, [isConnected, connectedAddress, ownerAddress]);
 
   if (!isConnected) {
     return (
       <div className="flex items-center flex-col flex-grow pt-10">
         <h1 className="text-4xl font-bold mb-4">Native ~ PlanTokens</h1>
         <p className="text-lg mb-4">Conecta tu wallet para continuar.</p>
-      
         {/* El botón de conexión lo maneja RainbowKit */}
       </div>
     );
   }
 
-  // Mostrar dashboard correspondiente
+  if (isOwnerLoading) {
+    return (
+      <div className="flex items-center flex-col flex-grow pt-10">
+        <h1 className="text-4xl font-bold mb-4">Cargando...</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center flex-grow pt-10 px-4">
       <h1 className="text-4xl font-bold mb-4">Native ~ PlanTokens</h1>
-      <p>
-        Conectado como: <strong>{address}</strong>{" "}
-        <button onClick={() => disconnect()} className="btn btn-error btn-sm ml-2">
-          Desconectar
-        </button>
-      </p>
       {isOwner ? (
-        <OwnerDashboard />
+        <OwnerDashboard ownerAddress={ownerAddress || ""} />
       ) : (
-        <UserDashboard userAddress={address || ""} />
+        <UserDashboard userAddress={connectedAddress || ""} />
       )}
-    </div>    
+    </div>
   );
 };
 

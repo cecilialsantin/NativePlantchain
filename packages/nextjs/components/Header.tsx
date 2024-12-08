@@ -3,10 +3,11 @@
 import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
+import { useDisconnect } from "wagmi";
 
 type HeaderMenuLink = {
   label: string;
@@ -23,27 +24,27 @@ export const menuLinks: HeaderMenuLink[] = [
 ];
 
 export const HeaderMenuLinks = () => {
-  const pathname = usePathname();
+  const router = useRouter();
+  const { disconnect } = useDisconnect();
+
+  const handleHomeClick = (href: string) => {
+    disconnect(); // Desconecta al usuario
+    router.push(href); // Redirige a la página inicial
+  };
 
   return (
     <>
-      {menuLinks.map(({ label, href, icon }) => {
-        const isActive = pathname === href;
-        return (
-          <li key={href}>
-            <Link
-              href={href}
-              passHref
-              className={`${
-                isActive ? "bg-pink-800 text-white shadow-md" : ""
-              } hover:bg-pink-700 hover:shadow-md focus:!bg-pink-800 active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
-            >
-              {icon}
-              <span>{label}</span>
-            </Link>
-          </li>
-        );
-      })}
+      {menuLinks.map(({ label, href, icon }) => (
+        <li key={href}>
+          <button
+            onClick={() => handleHomeClick(href)}
+            className="hover:bg-pink-700 hover:shadow-md focus:!bg-pink-800 active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col bg-pink-800 text-white shadow-md"
+          >
+            {icon}
+            <span>{label}</span>
+          </button>
+        </li>
+      ))}
     </>
   );
 };
