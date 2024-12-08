@@ -733,9 +733,9 @@ export default UserDashboard;*/
 /* eslint-disable prettier/prettier */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaLeaf } from "react-icons/fa";
-import { useScaffoldWriteContract, useScaffoldEventHistory, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { useScaffoldWriteContract, useScaffoldEventHistory } from "~~/hooks/scaffold-eth";
 
 const UserDashboard = ({ userAddress }: { userAddress: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -748,19 +748,6 @@ const UserDashboard = ({ userAddress }: { userAddress: string }) => {
   // Hook para llamar a `submitPlant` en el contrato
   const { writeContractAsync: submitPlant } = useScaffoldWriteContract("NativePlantTokens");
   const { writeContractAsync: claimToken } = useScaffoldWriteContract("NativePlantTokens");
-
-  const [userTokens, setUserTokens] = useState<number[]>([]);
-  const { data: tokens, isLoading } = useScaffoldReadContract({
-    contractName: "NativePlantTokens",
-    functionName: "getUserTokens",
-    args: [userAddress, BigInt(0), BigInt(10)], // Convertimos los argumentos a bigint
-  });
-
-  useEffect(() => {
-    if (tokens) {
-      setUserTokens(tokens.map((token: bigint) => Number(token)));
-    }
-  }, [tokens]);
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -925,26 +912,27 @@ const UserDashboard = ({ userAddress }: { userAddress: string }) => {
             )}
           </div>
 
-
+{/*
           <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mt-6">
-            <h2 className="text-lg font-bold mb-4">Tus Tokens:</h2>
-            {isLoading ? (
-              <p className="text-gray-500">Cargando tus tokens...</p>
-            ) : userTokens.length > 0 ? (
-              <div className="flex flex-wrap gap-4">
-                {userTokens.map((tokenId, index) => (
-                  <div
-                    key={index}
-                    className="w-16 h-16 flex items-center justify-center bg-green-200 text-green-900 font-bold rounded-full shadow-md"
-                  >
-                    {tokenId}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500">No tienes tokens aún.</p>
-            )}
-          </div>
+          <h2 className="text-lg font-bold mb-4">Tus Tokens</h2>
+      {isLoading ? (
+        <p>Cargando...</p>
+      ) : userTokens.length > 0 ? (
+        <ul>
+          {userTokens.map((tokenId) => (
+            <li key={tokenId}>Token ID: {tokenId}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>No tienes tokens registrados.</p>
+      )}
+      <button
+        onClick={handleFetchTokens}
+        className="mt-4 px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-900"
+      >
+        Actualizar Tokens
+      </button>
+          </div>*/}
 
 
           <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mt-6">
