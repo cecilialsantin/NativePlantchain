@@ -28,7 +28,8 @@ const Home = () => {
     return (
       <div className="flex items-center flex-col flex-grow pt-10">
         <h1 className="text-4xl font-bold mb-4">Native ~ PlanTokens</h1>
-        <p className="text-lg mb-4">Conecta tu wallet para continuar.</p>
+        <h4 className="text-1xl font-bold mb-4">by NativePlantchain ~ EcoRoots</h4>
+        <p className="text-lg mb-4">Conecta tu wallet para continuar...</p>
         {/* El botón de conexión lo maneja RainbowKit */}
       </div>
     );

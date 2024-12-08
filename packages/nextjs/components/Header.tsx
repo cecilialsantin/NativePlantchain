@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use client";
 
 import React, { useCallback, useRef, useState } from "react";
@@ -28,7 +29,7 @@ export const HeaderMenuLinks = () => {
   const { disconnect } = useDisconnect();
 
   const handleHomeClick = (href: string) => {
-    disconnect(); // Desconecta al usuario
+    disconnect(); // Desconecta al usuario si está conectado
     router.push(href); // Redirige a la página inicial
   };
 
@@ -37,6 +38,7 @@ export const HeaderMenuLinks = () => {
       {menuLinks.map(({ label, href, icon }) => (
         <li key={href}>
           <button
+            type="button"
             onClick={() => handleHomeClick(href)}
             className="hover:bg-pink-700 hover:shadow-md focus:!bg-pink-800 active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col bg-pink-800 text-white shadow-md"
           >
@@ -61,25 +63,22 @@ export const Header = () => {
   );
 
   return (
-    <div className="sticky lg:static top-0 navbar bg-green-800 text-white min-h-0 flex-shrink-0 justify-between z-20 shadow-md px-0 sm:px-2">
+    <div className="sticky lg:static top-0 navbar bg-green-800 text-black min-h-0 flex-shrink-0 justify-between z-20 shadow-md px-0 sm:px-2">
       <div className="navbar-start w-auto lg:w-1/2">
         <div className="lg:hidden dropdown" ref={burgerMenuRef}>
-          <label
+          <button
+            type="button"
             tabIndex={0}
-            className={`ml-1 btn btn-ghost ${isDrawerOpen ? "hover:bg-pink-800" : "hover:bg-transparent"}`}
-            onClick={() => {
-              setIsDrawerOpen(prevIsOpenState => !prevIsOpenState);
-            }}
+            className={`ml-1 btn btn-ghost ${isDrawerOpen ? "hover:bg-pink-800" : "hover:bg-green-200"}`}
+            onClick={() => setIsDrawerOpen(!isDrawerOpen)}
           >
-            <Bars3Icon className="h-1/2" />
-          </label>
+            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+          </button>
           {isDrawerOpen && (
             <ul
               tabIndex={0}
-              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-              onClick={() => {
-                setIsDrawerOpen(false);
-              }}
+              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-blue-500 rounded-box w-52"
+              onClick={() => setIsDrawerOpen(false)}
             >
               <HeaderMenuLinks />
             </ul>
@@ -90,7 +89,7 @@ export const Header = () => {
             <Image alt="PNT Logo" className="cursor-pointer rounded-full object-cover" fill src="/icononly.png" />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold leading-tight">NativePlantchain</span>
+            <span className="font-bold leading-tight"></span>
           </div>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
