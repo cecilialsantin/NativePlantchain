@@ -97,4 +97,20 @@ contract NativePlantTokens is ERC721, Ownable {
     function getPlantDetails(uint256 tokenId) public view returns (Plant memory) {
         return plants[tokenId];
     }
+
+    function getSubmittedPlants(uint256 start, uint256 limit) public view returns (SubmittedPlant[] memory) {
+    uint256 total = submittedPlantCounter;
+    require(start < total, "Start index out of bounds");
+
+    uint256 end = start + limit > total ? total : start + limit;
+    SubmittedPlant[] memory resultPlants = new SubmittedPlant[](end - start);
+
+    for (uint256 i = start; i < end; i++) {
+        resultPlants[i - start] = submittedPlants[i];
+    }
+
+    return resultPlants;
+}
+
+
 }
