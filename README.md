@@ -33,3 +33,7 @@ El usuario puede reclamar sus tokens una vez asignados.
 
 Especies nativas por ecorregión. Coordenadas de las ecorregiones para validar la ubicación.
 
+# Flujo del proceso
+
+![image](https://github.com/user-attachments/assets/981fffa3-87c1-4d27-9d95-5c99396b33df)
+
