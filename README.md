@@ -7,6 +7,7 @@ NativePlantchain es un proyecto que incentiva a las personas a plantar especies 
 
 Los usuarios reciben tokens únicos (NFTs ERC-721) como recompensa al registrar y verificar pruebas de plantación de especies nativas correspondientes a su ecorregión. Cada token representa la especie plantada, la ubicación y su conexión con la ecorregión correspondiente.
 
+Gracias a la tecnología de blockchain, esta aplicación se ejecuta en modo autónomo, se eliminan intermediarios y el código es inmutable.
 
 Arquitectura del Proyecto
 
@@ -31,4 +32,8 @@ El usuario puede reclamar sus tokens una vez asignados.
 4.	Datos de Referencia:
 
 Especies nativas por ecorregión. Coordenadas de las ecorregiones para validar la ubicación.
+
+# Flujo del proceso
+
+![image](https://github.com/user-attachments/assets/981fffa3-87c1-4d27-9d95-5c99396b33df)
 
