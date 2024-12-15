@@ -65,6 +65,7 @@ export default Home;*/
 
 "use client";
 
+import { FaLeaf } from "react-icons/fa"; // Importar el ícono de hoja de FontAwesome
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
@@ -106,7 +107,7 @@ const Home = () => {
     return (
       <div className="flex items-center flex-col flex-grow pt-10">
         <h1 className="text-4xl font-bold mb-4">Native ~ PlanTokens</h1>
-        <h4 className="text-1xl font-bold mb-4">by NativePlantchain ~ EcoRoots</h4>
+        <h4 className="text-1xl font-bold mb-4">by NativePlantchain ~ <FaLeaf/> </h4>
         <p className="text-lg mb-4">Conecta tu wallet para continuar...</p>
       </div>
     );
