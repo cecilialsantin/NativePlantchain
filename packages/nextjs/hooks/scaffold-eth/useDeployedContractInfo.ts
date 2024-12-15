@@ -29,6 +29,8 @@ export const useDeployedContractInfo = <TContractName extends ContractName>(cont
           address: deployedContract.address,
         });
 
+        console.log("Código del contrato (getCode):", code);
+
         // If contract code is `0x` => no contract deployed on that address
         if (code === "0x") {
           setStatus(ContractCodeStatus.NOT_FOUND);
