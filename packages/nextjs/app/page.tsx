@@ -13,20 +13,24 @@ const Home = () => {
   const { address: connectedAddress, isConnected } = useAccount();
   const [isOwner, setIsOwner] = useState(false);
 
-  // Usar el hook scaffold para obtener el propietario del contrato
-  const { data: ownerAddress, isLoading: isOwnerLoading } = useScaffoldReadContract({
-    contractName: "NativePlantTokens", // Nombre del contrato en deployedContracts.ts
-    functionName: "owner", // Nombre de la función en el ABI del contrato
-  });
-
   // Detectar si el usuario conectado es el propietario del contrato
+  const { data: ownerAddress, isLoading: isOwnerLoading, error } = useScaffoldReadContract({
+    contractName: "NativePlantTokens",
+    functionName: "owner",
+  });
+  
   useEffect(() => {
+    console.log("isConnected:", isConnected);
+    console.log("connectedAddress:", connectedAddress);
+    console.log("ownerAddress:", ownerAddress);
+    console.log("isOwnerLoading:", isOwnerLoading);
+    console.log("Error:", error); // Imprime cualquier error que ocurra
     if (isConnected && connectedAddress && ownerAddress) {
-      console.log("Connected address:", connectedAddress);
-    console.log("Owner address:", ownerAddress);
       setIsOwner(connectedAddress.toLowerCase() === ownerAddress.toLowerCase());
+    } else {
+      setIsOwner(false);
     }
-  }, [isConnected, connectedAddress, ownerAddress]);
+  }, [isConnected, connectedAddress, ownerAddress, isOwnerLoading, error]);
 
   if (!isConnected) {
     return (
