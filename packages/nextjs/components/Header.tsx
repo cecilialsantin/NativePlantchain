@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+
 "use client";
 
 import React, { useCallback, useRef, useState } from "react";
@@ -51,9 +52,10 @@ export const HeaderMenuLinks = () => {
   );
 };
 
-/**
+/*
  * Site header
- */
+*/
+
 export const Header = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const burgerMenuRef = useRef<HTMLDivElement>(null);
