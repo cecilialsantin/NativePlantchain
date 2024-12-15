@@ -25,6 +25,8 @@ export const useDeployedContractInfo = <TContractName extends ContractName>(cont
           return;
         }
 
+        console.log("Dirección del contrato:", deployedContract.address);
+
         const code = await publicClient.getCode({
           address: deployedContract.address,
         });
