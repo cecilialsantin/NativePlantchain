@@ -5,32 +5,35 @@
 import { FaLeaf } from "react-icons/fa"; // Importar el ícono de hoja de FontAwesome
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { useScaffoldReadContract, useTargetNetwork } from "~~/hooks/scaffold-eth";
 import OwnerDashboard from "~~/components/OwnerDashboard";
 import UserDashboard from "~~/components/UserDashboard";
 
 const Home = () => {
-  const { address: connectedAddress, isConnected } = useAccount();
+  const { address: userAddress, isConnected } = useAccount();
   const [isOwner, setIsOwner] = useState(false);
+  const { targetNetwork } = useTargetNetwork();
 
   // Detectar si el usuario conectado es el propietario del contrato
   const { data: ownerAddress, isLoading: isOwnerLoading, error } = useScaffoldReadContract({
     contractName: "NativePlantTokens",
     functionName: "owner",
   });
+
   
   useEffect(() => {
     console.log("isConnected:", isConnected);
-    console.log("connectedAddress:", connectedAddress);
+    console.log("connectedAddress:", userAddress);
     console.log("ownerAddress:", ownerAddress);
     console.log("isOwnerLoading:", isOwnerLoading);
-
-    if (isConnected && connectedAddress && ownerAddress) {
-      setIsOwner(connectedAddress.toLowerCase() === ownerAddress.toLowerCase());
+    console.log("Target Network:", targetNetwork);
+ 
+    if (isConnected && userAddress && ownerAddress) {
+      setIsOwner(userAddress.toLowerCase() === ownerAddress.toLowerCase());
     } else {
       setIsOwner(false);
     }
-  }, [isConnected, connectedAddress, ownerAddress, isOwnerLoading, error]);
+  }, [isConnected, userAddress, ownerAddress, isOwnerLoading, error, targetNetwork]);
 
   if (!isConnected) {
     return (
@@ -57,7 +60,7 @@ const Home = () => {
       {isOwner ? (
         <OwnerDashboard ownerAddress={ownerAddress || ""} />
       ) : (
-        <UserDashboard userAddress={connectedAddress || ""} />
+        <UserDashboard userAddress={userAddress || ""} />
       )}
     </div>
   );

@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
-import { useTargetNetwork } from "./useTargetNetwork";
+import { useTargetNetwork } from "~~/hooks/scaffold-eth";
 import { useIsMounted } from "usehooks-ts";
 import { usePublicClient } from "wagmi";
 import { Contract, ContractCodeStatus, ContractName, contracts } from "~~/utils/scaffold-eth/contract";
 
-/**
- * Gets the matching contract info for the provided contract name from the contracts present in deployedContracts.ts
- * and externalContracts.ts corresponding to targetNetworks configured in scaffold.config.ts
- */
 export const useDeployedContractInfo = <TContractName extends ContractName>(contractName: TContractName) => {
   const isMounted = useIsMounted();
   const { targetNetwork } = useTargetNetwork();
   const deployedContract = contracts?.[targetNetwork.id]?.[contractName as ContractName] as Contract<TContractName>;
   const [status, setStatus] = useState<ContractCodeStatus>(ContractCodeStatus.LOADING);
   const publicClient = usePublicClient({ chainId: targetNetwork.id });
+
+
+  useEffect(() => {
+    console.log("Target Network:", targetNetwork);
+    console.log("deployedContract:", deployedContract)
+  }, [targetNetwork]);
 
   useEffect(() => {
     const checkContractDeployment = async () => {
@@ -25,22 +27,20 @@ export const useDeployedContractInfo = <TContractName extends ContractName>(cont
           return;
         }
 
-        console.log("Dirección del contrato:", deployedContract.address);
-
         const code = await publicClient.getCode({
           address: deployedContract.address,
         });
 
         console.log("Código del contrato (getCode):", code);
 
-        // If contract code is `0x` => no contract deployed on that address
         if (code === "0x") {
           setStatus(ContractCodeStatus.NOT_FOUND);
           return;
         }
+
         setStatus(ContractCodeStatus.DEPLOYED);
       } catch (e) {
-        console.error(e);
+        console.error("Error en getCode:", e);
         setStatus(ContractCodeStatus.NOT_FOUND);
       }
     };

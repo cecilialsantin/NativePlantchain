@@ -733,9 +733,9 @@ export default UserDashboard;*/
 /* eslint-disable prettier/prettier */
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaLeaf } from "react-icons/fa";
-import { useScaffoldWriteContract, useScaffoldEventHistory } from "~~/hooks/scaffold-eth";
+import { useScaffoldWriteContract, useScaffoldEventHistory, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
 const UserDashboard = ({ userAddress }: { userAddress: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -745,11 +745,35 @@ const UserDashboard = ({ userAddress }: { userAddress: string }) => {
   const [isMining, setIsMining] = useState(false);
   const [tokenId, setTokenId] = useState(""); // State for tokenId to claim
 
+  const [userTokens, setUserTokens] = useState<number[]>([]); // State para almacenar los tokens de usuario
+
   // Hook para llamar a `submitPlant` en el contrato
   const { writeContractAsync: submitPlant } = useScaffoldWriteContract("NativePlantTokens");
   const { writeContractAsync: claimToken } = useScaffoldWriteContract("NativePlantTokens");
 
+    // Hook para leer la función `getUserTokens`
+    const { data: tokensData, isLoading: isLoadingTokens, error: tokensError } = useScaffoldReadContract({
+      contractName: "NativePlantTokens",
+      functionName: "getUserTokens",
+      args: [userAddress, BigInt(0), BigInt(10)], // Puedes ajustar el rango de inicio y límite aquí
+      
+    });
 
+    
+      /**
+   * Actualizar la lista de tokens cada vez que la consulta obtenga nuevos datos.
+   */
+  useEffect(() => {
+    if (tokensData && Array.isArray(tokensData)) {
+      console.log("📦 Tokens del usuario obtenidos:", tokensData);
+      setUserTokens(tokensData.map(token => Number(token))); // Convertimos BigInt a número
+    }
+  }, [tokensData]);
+
+
+/**
+   * formulario para submitPlant
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -912,27 +936,22 @@ const UserDashboard = ({ userAddress }: { userAddress: string }) => {
             )}
           </div>
 
-{/*
           <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mt-6">
-          <h2 className="text-lg font-bold mb-4">Tus Tokens</h2>
-      {isLoading ? (
-        <p>Cargando...</p>
-      ) : userTokens.length > 0 ? (
-        <ul>
-          {userTokens.map((tokenId) => (
-            <li key={tokenId}>Token ID: {tokenId}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No tienes tokens registrados.</p>
-      )}
-      <button
-        onClick={handleFetchTokens}
-        className="mt-4 px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-900"
-      >
-        Actualizar Tokens
-      </button>
-          </div>*/}
+        <h2 className="text-lg font-bold mb-4 text-green-700">Tus Tokens:</h2>
+        {isLoadingTokens ? (
+          <p>Cargando tokens...</p>
+        ) : tokensError ? (
+          <p className="text-red-500">Error al obtener los tokens: {tokensError.message}</p>
+        ) : userTokens.length > 0 ? (
+          <ul className="list-disc list-inside">
+            {userTokens.map((tokenId, index) => (
+              <li key={index}>Token ID: {tokenId}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No se encontraron tokens para este usuario.</p>
+        )}
+      </div>
 
 
           <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mt-6">

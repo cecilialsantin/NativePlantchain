@@ -219,6 +219,7 @@ export type UseScaffoldEventConfig<
 } & IsContractDeclarationMissing<
   Omit<UseWatchContractEventParameters, "onLogs" | "address" | "abi" | "eventName"> & {
     onLogs: (
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       logs: Simplify<
         Omit<Log<bigint, number, any>, "args" | "eventName"> & {
           args: Record<string, unknown>;
@@ -229,6 +230,7 @@ export type UseScaffoldEventConfig<
   },
   Omit<UseWatchContractEventParameters<ContractAbi<TContractName>>, "onLogs" | "address" | "abi" | "eventName"> & {
     onLogs: (
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       logs: Simplify<
         Omit<Log<bigint, number, false, TEvent, false, [TEvent], TEventName>, "args"> & {
           args: AbiParametersToPrimitiveTypes<TEvent["inputs"]> &
