@@ -126,10 +126,12 @@ const Home = () => {
   if (!isConnected) {
     return (
       <div className="flex items-center flex-col flex-grow pt-20">
-        <h1 className="text-4xl font-bold mb-4">Native ~ PlanTokens</h1>
-        <h3 className="text-1xl font-bold mb-4">by NativePlantchain ~ <span><FaLeaf/></span></h3>
-        <p className="text-lg mb-4">Conecta tu wallet para continuar...</p>
-      </div>
+      <h1 className="text-4xl font-bold mb-4">Native ~ PlanTokens</h1>
+      <h3 className="text-1xl font-bold mb-4 flex items-center">
+        by NativePlantchain ~ <span className="ml-2"><FaLeaf /></span>
+      </h3>
+      <p className="text-lg mb-4">Conecta tu wallet para continuar...</p>
+    </div>
     );
   }
 
